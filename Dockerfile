@@ -16,5 +16,8 @@ RUN mkdir -p /home/ue4/project
 # Copy the project from S3 bucket
 RUN aws s3 cp --recursive s3://sugarstore/Sugar_LinuxTick /home/ue4/project
 
+# Change the script's permissions to ensure it is executable
+RUN chmod +x /home/ue4/project/C2004_Sugar_Tower.sh
+
 # Set the project as the container's entrypoint
-ENTRYPOINT ["/home/ue4/project/Sugar_LinuxTick/C2004_Sugar_Tower.sh", "-RenderOffscreen", "-RenderOffscreen", "-AllowPixelStreamingCommands", "-PixelStreamingHideCursor", "-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio", "-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
+ENTRYPOINT ["/home/ue4/project/C2004_Sugar_Tower.sh", "-RenderOffscreen", "-RenderOffscreen", "-AllowPixelStreamingCommands", "-PixelStreamingHideCursor", "-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio", "-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
