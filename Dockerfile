@@ -11,10 +11,10 @@ RUN apt-get update && apt-get install -y awscli
 ENV AWS_DEFAULT_REGION=ap-northeast-3
 
 # Copy the project from S3 bucket
-RUN aws s3 cp --recursive s3://sugarstore/Sugar_LinuxTick /home/ue4/project
+RUN aws s3 cp --recursive s3://sugarstore/T2313Linux_Tick /home/ue4/project
 
 # Change the script's permissions to ensure it is executable
-RUN chmod +x /home/ue4/project/C2004_Sugar_Tower.sh
+RUN chmod +x /home/ue4/project/T2313.sh
 
 # Set the project as the container's entrypoint
-ENTRYPOINT ["/home/ue4/project/C2004_Sugar_Tower.sh", "-RenderOffscreen", "-AllowPixelStreamingCommands" ,"-PixelStreamingHideCursor" ,"-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio","-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
+ENTRYPOINT ["/home/ue4/project/T2313.sh", "-RenderOffscreen", "-AllowPixelStreamingCommands" ,"-PixelStreamingHideCursor" ,"-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio","-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
