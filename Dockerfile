@@ -1,23 +1,24 @@
+# Perform the build in an Unreal Engine container image that includes the Engine Tools and Pixel Streaming for Linux
+FROM ghcr.io/epicgames/unreal-engine:dev-4.27 as builder
+
+# Clone the source code for the example Unreal project
+RUN mkdir /tmp/github
+RUN git clone --progress --depth=1 'https://github.com/stevensu1977/UE4-PixelStreaming-demo.git' /tmp/github
+RUN mv  /tmp/github/FirstPersonProject/*  /tmp/project
+
+
+# Package the example Unreal project
+RUN /home/ue4/UnrealEngine/Engine/Build/BatchFiles/RunUAT.sh BuildCookRun \
+        -clientconfig=Development -serverconfig=Development \
+        -project=/tmp/project/FirstPersonProject.uproject \
+        -utf8output -nodebuginfo -allmaps -noP4 -cook -build -stage -prereqs -pak -archive \
+        -archivedirectory=/tmp/project/dist \
+        -platform=Linux
+
 # Copy the packaged project into the Pixel Streaming runtime image
 FROM ghcr.io/epicgames/unreal-engine:runtime-pixel-streaming
+COPY --from=builder --chown=ue4:ue4 /tmp/project/dist/LinuxNoEditor /home/ue4/project
 
-# Switch to root user to install packages
-USER root
-
-# Install AWS CLI
-RUN apt-get update && apt-get install -y awscli
-
-# Set the AWS region (optional, can also be set via environment variables or AWS CLI config)
-ENV AWS_DEFAULT_REGION=ap-northeast-3
-
-# Create directory for the project
-RUN mkdir -p /home/ue4/project
-
-# Copy the project from S3 bucket
-RUN aws s3 cp --recursive s3://sugarstore/Sugar_LinuxTick /home/ue4/project
-
-# Change the script's permissions to ensure it is executable
-RUN chmod +x /home/ue4/project/C2004_Sugar_Tower.sh
 
 # Set the project as the container's entrypoint
-ENTRYPOINT ["/home/ue4/project/C2004_Sugar_Tower.sh", "-RenderOffscreen", "-AllowPixelStreamingCommands" ,"-PixelStreamingHideCursor" ,"-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio","-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
+ENTRYPOINT ["/home/ue4/project/FirstPersonProject.sh", "-RenderOffscreen", "-RenderOffscreen", "-AllowPixelStreamingCommands" ,"-PixelStreamingHideCursor" ,"-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio","-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
