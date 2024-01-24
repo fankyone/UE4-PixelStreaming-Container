@@ -25,9 +25,6 @@ dcps(){
 
 
 start(){
-     # Define the path to docker-compose
-     DOCKER_COMPOSE_CMD="/usr/local/bin/UE4-PixelStreaming-Container/docker-compose"
-
      # Determine which release of the Unreal Engine we will be running container images for
      UNREAL_ENGINE_RELEASE="5.1"
      if [[ ! -z "$1" ]]; then
@@ -51,11 +48,6 @@ start(){
      
      
      
-    # Verify that docker-compose is executable
-     if [ ! -x "$DOCKER_COMPOSE_CMD" ]; then
-        echo "docker-compose not found or not executable"
-        exit 1
-     fi
 
      # Verify that either curl is available
      if which curl 1>/dev/null; then
@@ -77,7 +69,7 @@ start(){
      export HTTP_PORT
      export STREAMER_PORT
      export PWD=$(pwd)
-     $DOCKER_COMPOSE_CMD $COMPOSE_FLAGS up -d --force-recreate  
+     docker-compose $COMPOSE_FLAGS up -d --force-recreate 
      echo ""
      echo http://${PUBLIC_IP}:${HTTP_PORT}
      echo ""
