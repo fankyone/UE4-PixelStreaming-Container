@@ -17,7 +17,7 @@ RUN /home/ue4/UnrealEngine/Engine/Build/BatchFiles/RunUAT.sh BuildCookRun \
 
 # Copy the packaged project into the Pixel Streaming runtime image
 FROM ghcr.io/epicgames/unreal-engine:runtime-pixel-streaming
-COPY --from=builder --chown=ue4:ue4 /tmp/project/dist/Linux /home/ue4/project
+COPY --from=builder --chown=ue4:ue4 /tmp/project/dist/LinuxNoEditor /home/ue4/project
 
 
 # Set the project as the container's entrypoint
