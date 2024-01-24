@@ -20,4 +20,4 @@ RUN aws s3 cp --recursive s3://sugarstore/Sugar_LinuxTick /home/ue4/project
 RUN chmod +x /home/ue4/project/C2004_Sugar_Tower.sh
 
 # Set the project as the container's entrypoint
-ENTRYPOINT ["/home/ue4/project/C2004_Sugar_Tower.sh"]
+ENTRYPOINT ["/home/ue4/project/C2004_Sugar_Tower.sh", "-RenderOffscreen", "-AllowPixelStreamingCommands" ,"-PixelStreamingHideCursor" ,"-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio","-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
