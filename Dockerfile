@@ -1,5 +1,5 @@
 # Perform the build in an Unreal Engine container image that includes the Engine Tools and Pixel Streaming for Linux
-FROM ghcr.io/epicgames/unreal-engine:dev-4.27 as builder
+FROM ghcr.io/epicgames/unreal-engine:dev-5.1 as builder
 
 # Clone the source code for the example Unreal project
 RUN mkdir /tmp/github
@@ -18,7 +18,7 @@ RUN /home/ue4/UnrealEngine/Engine/Build/BatchFiles/RunUAT.sh BuildCookRun \
 
 # Copy the packaged project into the Pixel Streaming runtime image
 FROM ghcr.io/epicgames/unreal-engine:runtime-pixel-streaming
-COPY --from=builder --chown=ue4:ue4 /tmp/project/dist/LinuxNoEditor /home/ue4/project
+COPY --from=builder --chown=ue4:ue4 /tmp/project/dist/Linux /home/ue4/project
 
 
 # Set the project as the container's entrypoint
