@@ -5,7 +5,7 @@
  build() {
 	 TAG_NAME=$1
 	 if [ "$TAG_NAME" == "" ] ; then
-		 TAG_NAME="pixelstreaming-demo" 
+		 TAG_NAME="pixel-streaming-example/project" 
          fi
 	 echo "TAG_NAME:${TAG_NAME}"
 	 docker build -t ${TAG_NAME} .
