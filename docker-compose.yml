@@ -1,44 +1,47 @@
 version: "3"
 services:
-  
-  # The WebRTC TURN server (note that you will need TCP and UDP ports 3478 and 49152-65535 exposed for TURN relaying to function correctly)
+  # The WebRTC TURN server
   turnserver:
     image: "coturn/coturn:4.5.2"
     network_mode: "host"
-    command: ["-a", "-v", "-n", "-u", "user:password", "-p", "${TURN_PORT}", "-r", "default-realm", "--no-dtls", "--no-tls"]
-  
+    command: 
+      - "-a"
+      - "-v"
+      - "-n"
+      - "-u"
+      - "user:password"
+      - "-p"
+      - "3578"  # Changed from "${TURN_PORT}" to 3478 as per the docker run command
+      - "-r"
+      - "default-realm"
+      - "--no-dtls"
+      - "--no-tls"
+    init: true  # Added to match --init in the docker run command
+
   # The Cirrus signalling server
   signalling:
     image: "ghcr.io/epicgames/pixel-streaming-signalling-server:5.1"
     network_mode: "host"
     command:
-      - "--publicIp=${PUBLIC_IP}"
-      - "--HttpPort=${HTTP_PORT}"
-      - "--StreamerPort=${STREAMER_PORT}"
-      - >-
-        --peerConnectionOptions={
-            "iceServers":[
-              {
-                "urls": ["turn:${PUBLIC_IP}:${TURN_PORT}"],
-                "username": "user",
-                "credential": "password"
-              }
-            ]
-            ${EXTRA_PEERCONNECTION_OPTIONS}
-          }
+      - "--publicIp=16.162.63.7"  # Changed from "${PUBLIC_IP}" to the specific IP address
+      - "--peerConnectionOptions={\"iceServers\":[{\"urls\": [\"stun:stun.l.google.com:19302\"]}, {\"urls\": [\"turn:16.162.63.7:3478\"], \"username\": \"user\", \"credential\": \"password\"}]}"
+    init: true  # Added to match --init in the docker run command
     depends_on:
       - turnserver
-  
+
   # The Pixel Streaming demo project
   project:
     image: "pixelstreaming-demo"
     network_mode: "host"
     command:
-      - "-PixelStreamingURL=ws://127.0.0.1:${STREAMER_PORT}"
-    
-    depends_on:
-      - signalling
-    
+      - "-RenderOffscreen"
+      - "-Windowed"
+      - "-ForceRes"
+      - "-ResX=1920"
+      - "-ResY=1080"
+      - "-PixelStreamingIP=16.162.63.7"
+      - "-PixelStreamingPort=8888"
+      - "-PixelStreamingHideCursor=true"
     deploy:
       resources:
         reservations:
