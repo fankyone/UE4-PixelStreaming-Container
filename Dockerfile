@@ -27,4 +27,4 @@ RUN chmod +x /home/ue4/project/T2313.sh
 USER ue4user
 
 # Set the project as the container's entrypoint
-ENTRYPOINT ["/home/ue4/project/T2313.sh", "-RenderOffscreen","-PixelStreamingIP=13.230.92.44","-PixelStreamingPort=8888","-PixelStreamingHideCursor=true", "-AllowPixelStreamingCommands", "-ForceRes", "-ResX=1920", "-ResY=1080"]
+ENTRYPOINT ["/home/ue4/project/T2313.sh", "-RenderOffscreen", "-AllowPixelStreamingCommands" ,"-PixelStreamingHideCursor" ,"-PixelStreamingWebRTCMaxFps=30", "-PixelStreamingWebRTCDisableReceiveAudio","-FullStdOutLogOutput", "-ForceRes", "-ResX=1920", "-ResY=1080"]
