@@ -3,18 +3,19 @@ services:
   turnserver:
     image: coturn/coturn:4.5.2
     network_mode: host
-    command:
+    command: 
       - "-a"
       - "-v"
       - "-n"
-      - "-uuser:password"  # Notice no space between -u and the credentials
+      - "-u"
+      - "user:password"
       - "-p"
-      - "3578"
+      - "3578"  # Changed from "${TURN_PORT}" to 3478 as per the docker run command
       - "-r"
       - "default-realm"
       - "--no-dtls"
       - "--no-tls"
-    init: true
+    init: true  # Added to match --init in the docker run command
 
   signalling:
     image: pixel-streaming-signalling-server:latest
