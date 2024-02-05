@@ -7,24 +7,29 @@ services:
     network_mode: "host"
     command: ["-a", "-v", "-n", "-u", "user:password", "-p", "3578", "-r", "default-realm", "--no-dtls", "--no-tls"]
 
+  # The Cirrus signalling server
   signalling:
-    image: pixel-streaming-signalling-server:latest
-    network_mode: host
-    command: ["--publicIp=13.230.92.44", "--peerConnectionOptions={ \"iceServers\": [ { \"urls\": [\"stun:stun.l.google.com:19302\"] }, { \"urls\": [\"turn:13.230.92.44:3478\"], \"username\": \"user\", \"credential\": \"password\" } ] }"]
-    init: true
+    image: "pixel-streaming-signalling-server:latest"
+    network_mode: "host"
+    command:
+      - "--publicIp=13.230.92.44"  # Changed from "${PUBLIC_IP}" to the specific IP address
+      - "--peerConnectionOptions={\"iceServers\":[{\"urls\": [\"stun:stun.l.google.com:19302\"]}, {\"urls\": [\"turn:13.230.92.44:3478\"], \"username\": \"user\", \"credential\>    init: true  # Added to match --init in the docker run command
     depends_on:
       - turnserver
 
   # The Pixel Streaming demo project
   project:
-    image: "pixel-streaming-example/project:latest"
+    image: "pixel-streaming-example/project"
     network_mode: "host"
     command:
-      - "-PixelStreamingURL=ws://127.0.0.1:8888"
-    
-    depends_on:
-      - signalling
-    
+      - "-RenderOffscreen"
+      - "-Windowed"
+      - "-ForceRes"
+      - "-ResX=1920"
+      - "-ResY=1080"
+      - "-PixelStreamingIP=13.230.92.44"
+      - "-PixelStreamingPort=8888"
+      - "-PixelStreamingHideCursor=true"
     deploy:
       resources:
         reservations:
