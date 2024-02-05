@@ -20,7 +20,7 @@ services:
 
   # The Pixel Streaming demo project
   project:
-    image: "pixel-streaming-example/project"
+    image: "pixel-streaming-example/project:latest"
     network_mode: "host"
     command:
       - "-RenderOffscreen"
