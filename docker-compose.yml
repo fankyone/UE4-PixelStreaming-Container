@@ -5,7 +5,7 @@ services:
   turnserver:
     image: "coturn/coturn:4.5.2"
     network_mode: "host"
-    command: ["-a", "-v", "-n", "-u", "user:password", "-p", "${TURN_PORT}", "-r", "default-realm", "--no-dtls", "--no-tls"]
+    command: ["-a", "-v", "-n", "-u", "user:password", "-p", "3578", "-r", "default-realm", "--no-dtls", "--no-tls"]
 
   signalling:
     image: pixel-streaming-signalling-server:latest
@@ -20,7 +20,7 @@ services:
     image: "pixel-streaming-example/project:latest"
     network_mode: "host"
     command:
-      - "-PixelStreamingURL=ws://127.0.0.1:${STREAMER_PORT}"
+      - "-PixelStreamingURL=ws://127.0.0.1:8888"
     
     depends_on:
       - signalling
