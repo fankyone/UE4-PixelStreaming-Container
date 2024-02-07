@@ -6,6 +6,7 @@ services:
     image: "coturn/coturn:4.5.2"
     network_mode: "host"
     command: ["-a", "-v", "-n", "-u", "user:password", "-p", "3578", "-r", "default-realm", "--no-dtls", "--no-tls"]
+  init: true  # Added to match --init in the docker run command
 
   # The Cirrus signalling server
   signalling:
