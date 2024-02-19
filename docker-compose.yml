@@ -7,7 +7,7 @@ services:
     init: true
 
   signalling:
-    image: "pixel-streaming-signalling-server:latest"
+    image: "marvin0304/pixel-streaming-signalling-server:latest"
     network_mode: "host"
     command:
       - "--publicIp=35.75.94.188"
