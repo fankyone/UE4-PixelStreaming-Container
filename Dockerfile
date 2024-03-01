@@ -7,9 +7,6 @@ USER root
 # Install AWS CLI
 RUN apt-get update && apt-get install -y awscli
 
-# Set the AWS region (optional, can also be set via environment variables or AWS CLI config)
-ENV AWS_DEFAULT_REGION=ap-northeast-3
-
 # Create a directory for the project
 RUN mkdir -p /home/ue4/project
 
