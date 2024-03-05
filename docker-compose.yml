@@ -21,6 +21,7 @@ services:
     network_mode: "host"
     command:
       - "-RenderOffscreen"
+      - "-Windowed"
       - "-ForceRes"
       - "-ResX=1920"
       - "-ResY=1080"
