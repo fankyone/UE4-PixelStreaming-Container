@@ -21,13 +21,11 @@ services:
     network_mode: "host"
     command:
       - "-RenderOffscreen"
-      - "-Windowed"
       - "-ForceRes"
       - "-ResX=1920"
       - "-ResY=1080"
       - "-PixelStreamingIP=127.0.0.1"
       - "-PixelStreamingPort=8888"
-      - "-PixelStreamingHideCursor=true"
     deploy:
       resources:
         reservations:
