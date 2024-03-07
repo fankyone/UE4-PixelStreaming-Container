@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y awscli
 RUN mkdir -p /home/ue4/project
 
 # Copy the project from S3 bucket
-RUN aws s3 cp --recursive s3://sugarstore/Sugar_LinuxTick /home/ue4/project
+RUN aws s3 cp --recursive s3://tokyostore/SugarUpdate /home/ubuntu/SugarUpdate
 
 # Create a non-root user 'ue4user' and give ownership of the project directory
 RUN useradd -m ue4user && \
